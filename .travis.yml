@@ -132,11 +132,20 @@ matrix:
         - postgresql
       env: DB=pgsql POSTGRESQL_VERSION=9.5
 
-    - php: 7.1
-      sudo: false
-      dist: trusty
+    - stage: Test
+      php: 7.1
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      sudo: required
+      services:
+        - postgresql
       addons:
         postgresql: "9.6"
+      before_script:
+        - bash ./tests/travis/install-postgres-10.sh
+    - stage: Test
+      php: 7.2
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      sudo: required
       services:
         - postgresql
       env: DB=pgsql POSTGRESQL_VERSION=9.6
@@ -145,6 +154,12 @@ matrix:
       dist: trusty
       addons:
         postgresql: "9.6"
+      before_script:
+        - bash ./tests/travis/install-postgres-10.sh
+    - stage: Test
+      php: nightly
+      env: DB=pgsql POSTGRESQL_VERSION=10.0
+      sudo: required
       services:
         - postgresql
       env: DB=pgsql POSTGRESQL_VERSION=9.6
